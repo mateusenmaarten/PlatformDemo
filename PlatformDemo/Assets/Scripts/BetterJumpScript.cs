@@ -6,7 +6,7 @@ public class BetterJumpScript : MonoBehaviour
 {
     private Rigidbody2D rb;
 
-    public float fallMultiplier = 2.5f;
+    public float fallMultiplier = 1f;
     public float lowJumpMultiplier = 2f;
 
     private void Awake()

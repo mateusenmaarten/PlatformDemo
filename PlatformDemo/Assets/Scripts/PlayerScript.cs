@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -9,6 +11,9 @@ public class PlayerScript : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     public Animator animator;
+
+    //POSITION
+    private Vector2 _startPosition;
 
     //MOVE
     [SerializeField]
@@ -24,12 +29,20 @@ public class PlayerScript : MonoBehaviour
 
     public int extraJumpValue;
 
-
+    //UI
+    private int _lives = 3;
+    private int _pineappleCount;
+    public Text lives;
+    public Text pineappleCount;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+    private void Start()
+    {
+        _startPosition = transform.position;
     }
 
     private void Update()
@@ -89,6 +102,29 @@ public class PlayerScript : MonoBehaviour
         if (collision.tag == "Pickup")
         {
             Destroy(collision.gameObject);
+            _pineappleCount++;
+            pineappleCount.text = _pineappleCount.ToString();
         }
+        else if (collision.tag == "DeathTrigger")
+        {
+            transform.position = _startPosition;
+            if (_lives > 1)
+            {
+                _lives--;
+                lives.text = _lives.ToString();
+            }
+            else
+            {
+                SceneManager.LoadScene(0);
+            }
+            
+        }
+        else if (collision.tag == "Finish")
+        {
+            //Scene currentScene = SceneManager.GetActiveScene();
+            //SceneManager.LoadScene(currentScene.name);
+            SceneManager.LoadScene(0);
+        }
+        
     }
 }
